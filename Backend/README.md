@@ -195,19 +195,19 @@ The request body must be JSON and include the following fields:
     - Must be one of: `car`, `motorcycle`, `auto`.
 
 ### Example Request Body
-```json
+```jsonc
 {
   "fullname": {
-    "firstname": "Jane",
-    "lastname": "Doe"
+    "firstname": "Jane",               // required, min 3 chars
+    "lastname": "Doe"                 // optional
   },
-  "email": "captain@example.com",
-  "password": "securePassword123",
+  "email": "captain@example.com",     // required, valid email
+  "password": "securePassword123",    // required, min 6 chars
   "vehicle": {
-    "color": "Blue",
-    "plate": "ABC123",
-    "capacity": 4,
-    "vehicleType": "car"
+    "color": "Blue",                  // required, min 3 chars
+    "plate": "ABC123",                // required, min 3 chars
+    "capacity": 4,                      // required, positive integer
+    "vehicleType": "car"              // required, one of: car, motorcycle, auto
   }
 }
 ```
@@ -217,9 +217,31 @@ The request body must be JSON and include the following fields:
 - Status: `201 Created`
 - Body: JSON object containing the created captain.
 
+### Example Successful Response
+```jsonc
+{
+  "captain": {
+    "_id": "64b7f2e12345abcde6789012",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "captain@example.com",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "socketId": null
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."  // JWT token for auth
+}
+```
+
 ### Error Responses
 
 - Status: `400 Bad Request`
-  - Returned when validation fails (invalid email, missing fields, or invalid vehicle data).
+  - Returned when validation fails (invalid email, missing fields, invalid vehicle data, or captain already exists).
 - Status: `500 Internal Server Error`
   - Returned when an unexpected error occurs on the server.
