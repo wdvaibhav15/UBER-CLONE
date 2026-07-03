@@ -103,3 +103,59 @@ The request body must be JSON and include the following fields:
 - The password is compared to the stored hash before authentication.
 - The returned user object should not include the password field.
 - The token is generated using the user's `_id` and `JWT_SECRET` environment variable.
+
+## `GET /users/profile`
+
+Returns the authenticated user's profile data.
+
+### Description
+Retrieves the currently logged-in user's profile information using the active authentication token.
+
+### Request URL
+`/users/profile`
+
+### Method
+`GET`
+
+### Authentication
+Requires a valid JWT token, typically sent in an HTTP cookie or the `Authorization` header.
+
+### Successful Response
+
+- Status: `200 OK`
+- Body: JSON object containing the authenticated user's profile.
+
+### Error Responses
+
+- Status: `401 Unauthorized`
+  - Returned when no valid authentication token is provided.
+- Status: `500 Internal Server Error`
+  - Returned when an unexpected error occurs on the server.
+
+## `GET /users/logout`
+
+Logs out the authenticated user and blacklists the current JWT token.
+
+### Description
+Clears the authentication cookie and saves the current token in a blacklist so it cannot be reused.
+
+### Request URL
+`/users/logout`
+
+### Method
+`GET`
+
+### Authentication
+Requires a valid JWT token, typically sent in an HTTP cookie or the `Authorization` header.
+
+### Successful Response
+
+- Status: `200 OK`
+- Body: JSON object with a logout confirmation message.
+
+### Error Responses
+
+- Status: `401 Unauthorized`
+  - Returned when no valid authentication token is provided.
+- Status: `500 Internal Server Error`
+  - Returned when an unexpected error occurs on the server.
