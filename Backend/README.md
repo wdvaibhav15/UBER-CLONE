@@ -159,3 +159,67 @@ Requires a valid JWT token, typically sent in an HTTP cookie or the `Authorizati
   - Returned when no valid authentication token is provided.
 - Status: `500 Internal Server Error`
   - Returned when an unexpected error occurs on the server.
+
+## `POST /captains/register`
+
+Registers a new captain in the system.
+
+### Description
+Creates a new captain record using the provided full name, email, password, and vehicle information. The endpoint validates the request body, hashes the password, saves the captain data, and returns the created captain object.
+
+### Request URL
+`/captains/register`
+
+### Method
+`POST`
+
+### Request Body
+The request body must be JSON and include the following fields:
+
+- `fullname` (object, required)
+  - `firstname` (string, required)
+    - Minimum length: 3 characters.
+  - `lastname` (string, optional)
+- `email` (string, required)
+  - Must be a valid email address.
+- `password` (string, required)
+  - Minimum length: 6 characters.
+- `vehicle` (object, required)
+  - `color` (string, required)
+    - Minimum length: 3 characters.
+  - `plate` (string, required)
+    - Minimum length: 3 characters.
+  - `capacity` (integer, required)
+    - Must be a positive integer.
+  - `vehicleType` (string, required)
+    - Must be one of: `car`, `motorcycle`, `auto`.
+
+### Example Request Body
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "captain@example.com",
+  "password": "securePassword123",
+  "vehicle": {
+    "color": "Blue",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Successful Response
+
+- Status: `201 Created`
+- Body: JSON object containing the created captain.
+
+### Error Responses
+
+- Status: `400 Bad Request`
+  - Returned when validation fails (invalid email, missing fields, or invalid vehicle data).
+- Status: `500 Internal Server Error`
+  - Returned when an unexpected error occurs on the server.
